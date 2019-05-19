@@ -1,0 +1,18 @@
+HAProxy
+
+#my steps
+
+hostname
+ip a (inet 127.0.0.1/8)
+sudo yum install httpd
+**if an error is received like : cannot find a valid baseurl for repo base7x86 64. then run the below: sudo dhclient (install packages)
+
+sudo yum install httpd
+systemctl start httpd
+systemctl enable httpd
+firewall-cmd --list-all
+firewall-cmd --permamnent --zone=public --add-service=http
+firewall-cmd --permamnent --zone=public --add-service=https
+firewall-cmd --reload 11.firewall-cmd --list-all
+cd /var/www/html/
+ls
