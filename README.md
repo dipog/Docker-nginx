@@ -1,6 +1,8 @@
 # Install Docker
-Create container
+
 ================================
+Create container
+
 Create and run 2 Docker containers with nginx 
 
 1. docker run nginx 
