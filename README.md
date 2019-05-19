@@ -1,8 +1,7 @@
 # Install Docker
 Inrerswitch DevOps Challenge
 
-**my steps taken
-Install Docker on centOS
+**my steps taken.
 ============================
 
 1. cat /etc/centos-release (check version on centos)
