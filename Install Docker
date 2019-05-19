@@ -1,0 +1,18 @@
+Install Docker
+Inrerswitch DevOps Challenge
+
+**my steps taken.
+cat /etc/centos-release (check version on centos)
+Add docker to repository sudo touch /etc/yum.repos.d/docker.repo
+change directory cd /etc/yum.repos.d/
+check list ls
+Edit docker repo vi docker.repo
+click i on keyboard to type:
+
+[dockerrepo] name=Docker Repository baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/ enabled=1 gpgcheck=1 gpgkey=https://yum.dockerproject.org/gpg
+
+Install docker sudo yum install docker-engine
+
+check docker version docker -v
+
+***TO START DOCKER SERVICE sudo systemctl start docker.sercice
