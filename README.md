@@ -28,3 +28,7 @@ gpgkey=https://yum.dockerproject.org/gpg
 
 7. check docker version
 	docker -v
+
+
+***TO START DOCKER SERVICE
+	sudo systemctl start docker.sercice
