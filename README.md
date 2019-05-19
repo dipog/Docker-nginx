@@ -1,2 +1,2 @@
-# Docker-nginx
+# Install Docker
 Inrerswitch DevOps Challenge
