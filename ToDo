@@ -1,0 +1,5 @@
+To-do
+Install Docker
+Create and run 2 Docker containers with nginx
+Create, run and install HAProxy in 1 container
+Configured HAProxy to send traffic to working Nginx servers
