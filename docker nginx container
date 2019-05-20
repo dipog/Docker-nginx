@@ -1,5 +1,6 @@
-docker nginx
-================================ Create container
+docker nginx container
+================================ 
+Create container
 
 Create and run 2 Docker containers with nginx
 
