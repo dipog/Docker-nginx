@@ -1,11 +1,13 @@
 docker nginx container
 ================================ 
-Create container
+//Create container
 
-Create and run 2 Docker containers with nginx
+//Create and run 2 Docker containers with nginx
 
-docker run nginx this pulls nginx and installs.
+docker run nginx //this pulls nginx and installs.
 
 docker run hello-world.
 
-docker ps (to check available containers) or use docker ps -a
+docker ps //to check available containers) 
+//or use:
+docker ps -a
