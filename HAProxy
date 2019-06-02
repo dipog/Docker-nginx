@@ -1,18 +1,143 @@
 #HAproxy steps
 load balancer between the nginx containers
 ===========
+//Configure the /etc/hosts files
 
-hostname
-ip a (inet 127.0.0.1/8)
-sudo yum install httpd
-**if an error is received like : cannot find a valid baseurl for repo base7x86 64. then run the below: sudo dhclient (install packages)
+sudo su
+vi /etc/hosts
 
-sudo yum install httpd
-systemctl start httpd
-systemctl enable httpd
-firewall-cmd --list-all
-firewall-cmd --permamnent --zone=public --add-service=http
-firewall-cmd --permamnent --zone=public --add-service=https
-firewall-cmd --reload 11.firewall-cmd --list-all
-cd /var/www/html/
-ls
+
+//Add nginx1 and nginx2 hostnames
+192.168.1.104    nginx1.loadbalancer.me     nginx1
+192.168.1.105    nginx2.loadbalancer.me     nginx2
+
+
+//save 
+
+//edit the hosts file on the Nginx servers (nginx1 and nginx2)
+ssh nginx1@192.168.1.104
+ssh nginx2@192.168.1.105
+
+
+//Edit and add a new line for the load balancer in the hosts files:
+vi /etc/host
+
+
+//Add the loadbalancer hostname on each nginx server:
+192.168.1.102    loadbalancer
+
+//doing this on nginx1 and nginx2 server
+
+
+//Install and Configure HAProxy
+yum -y update
+
+
+//install HAProxy with this yum command
+yum -y install haproxy
+
+
+
+//When the installation is finished, go to the "/etc/haproxy/" directory and backup the original configuration file:
+cd /etc/haproxy/
+mv haproxy.cfg haproxy.cfg.orig
+
+
+
+//add a new HAProxy configuration file "haproxy.cfg" file with the vi editor
+vi haproxy.cfg
+
+
+//will Paste the configuration below
+#---------------------------------------------------------------------
+# Global settings
+#---------------------------------------------------------------------
+global
+    log         127.0.0.1 local2     #Log configuration
+ 
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     4000                
+    user        haproxy             #Haproxy running under user and group "haproxy"
+    group       haproxy
+    daemon
+ 
+    # turn on stats unix socket
+    stats socket /var/lib/haproxy/stats
+ 
+#---------------------------------------------------------------------
+# common defaults that all the 'listen' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+    mode                    http
+    log                     global
+    option                  httplog
+    option                  dontlognull
+    option http-server-close
+    option forwardfor       except 127.0.0.0/8
+    option                  redispatch
+    retries                 3
+    timeout http-request    10s
+    timeout queue           1m
+    timeout connect         10s
+    timeout client          1m
+    timeout server          1m
+    timeout http-keep-alive 10s
+    timeout check           10s
+    maxconn                 3000
+ 
+#---------------------------------------------------------------------
+#HAProxy Monitoring Config
+#---------------------------------------------------------------------
+listen haproxy3-monitoring *:8080                #Haproxy Monitoring run on port 8080
+    mode http
+    option forwardfor
+    option httpclose
+    stats enable
+    stats show-legends
+    stats refresh 5s
+    stats uri /stats                             #URL for HAProxy monitoring
+    stats realm Haproxy\ Statistics
+    stats auth howtoforge:howtoforge            #User and Password for login to the monitoring dashboard
+    stats admin if TRUE
+    default_backend app-main                    #This is optionally for monitoring backend
+ 
+#---------------------------------------------------------------------
+# FrontEnd Configuration
+#---------------------------------------------------------------------
+frontend main
+    bind *:80
+    option http-server-close
+    option forwardfor
+    default_backend app-main
+ 
+#---------------------------------------------------------------------
+# BackEnd roundrobin as balance algorithm
+#---------------------------------------------------------------------
+backend app-main
+    balance roundrobin                                     #Balance algorithm
+    option httpchk HEAD / HTTP/1.1\r\nHost:\ localhost    #Check the server application is up and healty - 200 status code
+    server nginx1 192.168.1.104:80 check                 #Nginx1 
+    server nginx2 192.168.1.105:80 check                 #Nginx2
+    
+    
+    
+    
+    
+    //Save the configuration file and exit
+    // configure rsyslog for HAProxy
+    //configure the rsyslog daemon to log the HAProxy statistics. Edit the rsyslog.conf file to enable the UDP port 514 to be used by rsyslog.
+    
+    vi /etc/rsyslog.conf
+    
+    
+    //Uncomment this line to enable the UDP connection:
+    
+    $ModLoad imudp
+$UDPServerRun 514
+
+
+
+
+
