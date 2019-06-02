@@ -138,6 +138,38 @@ backend app-main
 $UDPServerRun 514
 
 
+//to use a specific IP, I can add a new line like the one below:
+$UDPServerAddress 127.0.0.1
+
+//Save the file and exit
+
+
+//create new haproxy configuration file for rsyslog
+
+cd /etc/rsyslog.d/
+vi haproxy.conf
+
+
+//Paste configuration below:
+local2.=info     /var/log/haproxy-access.log    #For Access Log
+local2.notice    /var/log/haproxy-info.log      #For Service Info - Backend, loadbalancer
+
+
+//Save and exit
+
+
+//Now restart rsyslog and then start the haproxy:
+systemctl restart rsyslog
+systemctl start haproxy
+
+
+//Add haproxy to start at boot time:
+systemctl enable haproxy
+
+
+
+
+
 
 
 
