@@ -1,0 +1,25 @@
+//install Nginx from epel repository on nginx1 and nginx2 server.
+//log into servers. Install the epel repository with the yum command below:
+
+yum -y install epel-release
+
+
+//install Nginx:
+yum -y install nginx
+
+
+//Nginx is installed. 
+//Go to the web directory and change the index file so that we can see which of the two servers delivered the html file:
+
+cd /usr/share/nginx/html/
+echo "<h1>nginx1.loadbalance.me</h1>" > index.html     #For nginx1 server
+echo "<h1>nginx2.loadbalance.me</h1>" > index.html     #For nginx2 server
+
+
+//add Nginx to start at boot time and then start it:
+systemctl enable nginx
+systemctl start nginx
+
+
+//doing this step on nginx1 and nginx2 server
+
