@@ -19,7 +19,7 @@ if [[ $EUID -ne 0 ]] ; then
   exit 1
 fi
 
-# etc
+# config & directory
 CPU_CORES=`getconf _NPROCESSORS_ONLN`
 NGINX_VERSION="nginx-${1}"
 if [ -d "${WORKDIR}" ] ; then
